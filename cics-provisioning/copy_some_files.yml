@@ -1,0 +1,43 @@
+---
+- name: Provision CICS Data sets and start the region
+  hosts: all
+  gather_facts: false
+  vars_files: "{{ playbook_dir }}/host_vars/variables.yml"
+  environment: "{{ environment_vars }}"
+
+  vars:
+    num_files: 10
+
+  # module_defaults:
+  #   group/ibm.ibm_zos_cics.region_group:
+  #     state: initial
+  #     cics_data_sets:
+  #       template: "CTS610.CICS740.<< lib_name >>"
+  #       sdfhlic: "CTS610.CICS740.LIC.SDFHLIC"
+  #     region_data_sets:
+  #       template: "{{ ansible_user }}.REGIONS.{{ applid }}.<< data_set_name >>"
+  #     le_data_sets:
+  #       template: "CEE.<< lib_name >>"
+
+  tasks:
+    # - name: copy
+    #   ibm.zos_core.zos_copy:
+
+    - name: Copy file with owner and permissions
+      ansible.builtin.copy:
+        src: hello.war
+        dest: /u/tslatt/test/hello{{ item }}.war
+        mode: '0644'
+        remote_src: false
+      with_sequence: start=1 end={{ num_files }}
+      # async: 45
+      # poll: 5
+      # with_items:
+      #   - 1
+      #   - 2
+      #   - 3
+
+    - name: check
+      ansible.builtin.shell:
+        cmd: ls -al /u/tslatt/test
+

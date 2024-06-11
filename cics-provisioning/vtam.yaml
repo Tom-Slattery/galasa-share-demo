@@ -1,0 +1,32 @@
+---
+- name: Add and Active VTAM
+  hosts: all
+  gather_facts: false
+  vars_files: "{{ playbook_dir }}/host_vars/variables.yml"
+  environment: "{{ environment_vars }}"
+
+  tasks:
+    - name: Create VTAM PDS
+      ibm.ibm_zos_core.zos_data_set:
+        name: "TSLATT.VTAM"
+        state: present
+        replace: true
+    - name: Populate VTAM member
+      ibm.ibm_zos_core.zos_copy:
+        src: /Users/tomslattery/dev/galasa-share-demo/galasa-share-demo/cics-provisioning/vtam_member
+        dest: "TSLATT.VTAM(TSLATT)"
+        encoding:
+          from: UTF-8
+          to: IBM-037
+    - name: Copy to VTAMLST
+      ansible.builtin.command: dcp "TSLATT.VTAM(TSLATT)" "USER.DEV.VTAMLST(TSLATT)"
+    - name: Delete temp PDS
+      ibm.ibm_zos_core.zos_data_set:
+        name: "TSLATT.VTAM"
+        state: absent
+    - name: VTAM deactivation
+      ibm.ibm_zos_core.zos_operator:
+        cmd: "V NET,INACT,ID=TSLATT"
+    - name: VTAM activation
+      ibm.ibm_zos_core.zos_operator:
+        cmd: "V NET,ACT,ID=TSLATT"

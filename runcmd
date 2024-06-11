@@ -1,0 +1,1 @@
+galasactl runs submit local --obr mvn:com.ibm.cics.tests/com.ibm.cics.test.galasa.tsq.obr/0.0.1/obr --class com.ibm.cics.test.galasa.tsq.tsqdemo/com.ibm.cics.test.galasa.tsq.tsqdemo.TestTsqdemo --log -

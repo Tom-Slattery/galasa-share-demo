@@ -71,7 +71,7 @@ secure.credentials.ZOS.password=<<password>>
 		terminal.waitForTextInField("HIT ENTER FOR LATEST STATUS");
 		terminal.reportScreen();
 
-		terminal.type("logon applid(IYK2ZNB5)").enter().waitForTextInField("CICS FOR GALASA TEST");
+		terminal.type("logon applid(TSLADEMO)").enter().waitForTextInField("Region provisioned with Ansible");
 		terminal.waitForKeyboard().clear().waitForKeyboard();
 		terminal.type("TSQT").enter();
 
@@ -88,7 +88,7 @@ secure.credentials.ZOS.password=<<password>>
 			<artifactId>dev.galasa.cicsts.manager</artifactId>
 			<scope>provided</scope>
 		</dependency>
-        
+
 ```
 
 ## CPS updates
